@@ -5,24 +5,9 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "com.lewisjuggins.miband"
+        applicationId "com.ugopiemontese.openband"
         minSdkVersion 21
         targetSdkVersion 21
-    }
-
-    signingConfigs {
-        release {
-            def Properties localProps = new Properties()
-            localProps.load(new FileInputStream(file('local.properties')))
-            def Properties keyProps = new Properties()
-            if (localProps['keystore.props.file'] != null) {
-                keyProps.load(new FileInputStream(file(localProps['keystore.props.file'])))
-            }
-            storeFile keyProps["store"] != null ? file(keyProps["store"]) : null
-            keyAlias keyProps["alias"]
-            storePassword keyProps["storePass"]
-            keyPassword keyProps["pass"]
-        }
     }
 
     lintOptions {
@@ -33,9 +18,8 @@ android {
         release {
             shrinkResources true
             zipAlignEnabled true
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-            signingConfig signingConfigs.release
         }
     }
 }
@@ -66,6 +50,8 @@ dependencies {
     compile('com.android.support:palette-v7:21.0.+')
     compile('com.google.code.gson:gson:2.3.1')
     compile('com.melnykov:floatingactionbutton:1.1.0')
+    compile('com.nispok:snackbar:2.7.1')
+    compile('org.quanqi:mpandroidchart:1.7.5')
     androidTestCompile('junit:junit:4.12')
 }
 

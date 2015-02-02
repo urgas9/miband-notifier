@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.lewisjuggins.miband"
-    android:versionCode="1"
-    android:versionName="1.0">
+    package="com.ugopiemontese.openband"
+    android:versionCode="3"
+    android:versionName="2.0">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <uses-feature android:name="android.hardware.bluetooth_le"  android:required="true" />
 
     <application
@@ -15,9 +16,10 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
         <activity
-            android:name="com.lewisjuggins.miband.MiOverviewActivity"
-            android:label="@string/app_name" >
+            android:name=".MiSearchActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -25,18 +27,36 @@
         </activity>
 
         <activity
-                android:name="com.lewisjuggins.miband.AppPreferenceActivity"
+            android:name=".MiGraphActivity"
+            android:label="@string/app_name" />
+
+        <activity
+            android:name=".MiUserActivity"
+            android:label="@string/app_name" />
+
+        <activity
+            android:name=".PreferencesActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".MiGraphActivity" />
+
+        <activity
+            android:name=".MiOverviewActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".MiGraphActivity" />
+
+        <activity
+                android:name=".AppPreferenceActivity"
                 android:label="@string/app_name">
         </activity>
 
-        <service android:name="com.lewisjuggins.miband.NotificationService"
+        <service android:name=".NotificationService"
                  android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
 
-        <service android:name="com.lewisjuggins.miband.MiBandCommunicationService">
+        <service android:name=".MiBandCommunicationService">
         </service>
 
         <receiver android:name=".StartupReceiver">

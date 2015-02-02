@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Mi Band Notifier</string>
-    <string name="looking_for_miband">Looking for Mi Band</string>
+
+    <string name="app_name">OpenBand</string>
+	
+	<string name="ble_not_supported">BLE is not supported</string>
+    <string name="looking_for_miband">Looking for MiBand</string>
+    <string name="not_found">MiBand not found. Is it in range?</string>
+    <string name="choose_miband">Choose your MiBand</string>
+    <string name="downloading_from_miband">Downloading data</string>
+    <string name="enable_ble">Bluetooth is disabled</string>
+    <string name="action_enable_ble">Enable</string>
+    <string name="scan_again">Scan again?</string>
+    <string name="action_scan_again">Yes</string>
+
+    <string name="temp_text">App Name</string>
     <string name="vibrations">Vibrations</string>
     <string name="duration">Duration</string>
     <string name="flash">Flash</string>
@@ -11,7 +23,57 @@
     <string name="user_not_present">Non interactive</string>
     <string name="no_vibrate_outside_of_period">Lights outside of period</string>
     <string name="done">Done</string>
-    <string name="temp_text">App Name</string>
+
     <string name="test_band_vibrate">Test Band Vibrate</string>
     <string name="set_band_colour">Set Band LED Color</string>
+	
+	<string name="steps">steps</string>
+    <string name="distance">km</string>
+    <string name="battery">battery</string>
+
+    <string name="title_preferences_main">Preferences</string>
+    <string name="title_preferences_user">Profile</string>
+
+    <string name="title_name_preference">Name</string>
+    <string name="summary_name_preference">Your full name</string>
+
+    <string name="title_height_preference">Height</string>
+    <string name="summary_height_preference">Your height in cm</string>
+
+    <string name="title_weight_preference">Weight</string>
+    <string name="summary_weight_preference">Your weight in kg</string>
+
+    <string name="title_sex_preference">Gender</string>
+    <string name="summary_sex_preference">Your gender</string>
+
+    <string-array name="entries_sex_preference">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
+    <string name="title_age_preference">Age</string>
+    <string name="summary_age_preference">Your age in years</string>
+
+    <string name="title_goal_preference">Goal</string>
+    <string name="summary_goal_preference">Set your daily goal in steps</string>
+
+    <string-array name="entries_goal_preference">
+        <item>2500</item>
+        <item>5000</item>
+        <item>7500</item>
+        <item>10000</item>
+    </string-array>
+
+    <string name="title_preferences_info">Info</string>
+
+    <string name="title_mac_address_preference">MAC Address</string>
+    <string name="title_firmware_preference">Firmware</string>
+
+    <string name="title_preferences_about">About</string>
+
+    <string name="title_license_preference">License</string>
+    <string name="summary_license_preference">GNU GPL v3</string>
+
+    <string name="action_about_preference">http://www.ugopiemontese.eu/portfolio-item/openband/</string>
+
 </resources>
