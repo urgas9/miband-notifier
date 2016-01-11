@@ -2,8 +2,11 @@ package com.ugopiemontese.openband;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -16,11 +19,11 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.ugopiemontese.openband.helper.MiBand;
-import com.ugopiemontese.openband.helper.MiBandAdapter;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.listeners.ActionClickListener;
+import com.ugopiemontese.openband.helper.MiBand;
+import com.ugopiemontese.openband.helper.MiBandAdapter;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -37,7 +40,7 @@ public class MiSearchActivity extends Activity implements AdapterView.OnItemClic
     private ListView mListView;
     private List mMiBandList;
 
-    private static final long SCAN_PERIOD = 10000; // 10 seconds.
+    private static final long SCAN_PERIOD = 20000; // 10 seconds.
 
     private SharedPreferences sharedPreferences;
     private String mAddress;
@@ -61,13 +64,16 @@ public class MiSearchActivity extends Activity implements AdapterView.OnItemClic
 
         mListView.setOnItemClickListener(this);
 
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        // Initializes Bluetooth adapter.
+        final BluetoothManager bluetoothManager =
+                (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        mBluetoothAdapter = bluetoothManager.getAdapter();
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         mAddress = sharedPreferences.getString(MiBandConstants.PREFERENCE_MAC_ADDRESS, "");
 
-        if (mAddress.length() > 0 && mAddress.startsWith(MiBandConstants.MAC_ADDRESS_FILTER)) {
+        if (mAddress.length() > 0 && (mAddress.startsWith(MiBandConstants.MAC_ADDRESS_FILTER) || mAddress.startsWith(MiBandConstants.MAC_ADDRESS_FILTER_1S))) {
             Intent overview = new Intent(getApplicationContext(), MiGraphActivity.class);
             startActivity(overview);
         } else {
@@ -133,6 +139,7 @@ public class MiSearchActivity extends Activity implements AdapterView.OnItemClic
             }, SCAN_PERIOD);
             mScanning = true;
             mBluetoothAdapter.getBluetoothLeScanner().startScan(mScanCallback);
+            String s = "!";
 
         } else {
 
@@ -180,7 +187,7 @@ public class MiSearchActivity extends Activity implements AdapterView.OnItemClic
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
             super.onScanResult(callbackType, result);
-            if (result.getDevice() != null && result.getDevice().getName().equals("MI") && result.getDevice().getAddress().startsWith(MiBandConstants.MAC_ADDRESS_FILTER)) {
+            if (result.getDevice() != null && isDeviceMiBand(result.getDevice())) {
 
                 mMiBandList.add(new MiBand(result.getDevice().getName(), result.getDevice().getAddress()));
                 mListView.invalidate();
@@ -188,6 +195,11 @@ public class MiSearchActivity extends Activity implements AdapterView.OnItemClic
             }
         }
     };
+
+    private boolean isDeviceMiBand(BluetoothDevice device){
+        return (device.getName().equals("MI1S") && device.getAddress().startsWith(MiBandConstants.MAC_ADDRESS_FILTER_1S) ||
+                device.getName().equals("MI") && device.getAddress().startsWith(MiBandConstants.MAC_ADDRESS_FILTER));
+    }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {

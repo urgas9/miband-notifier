@@ -15,6 +15,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -256,6 +257,10 @@ public class MiGraphActivity extends Activity {
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 request(MiBandConstants.UUID_CHARACTERISTIC_REALTIME_STEPS);
+                for(BluetoothGattService s : gatt.getServices()){
+                    Log.d("SERVICE", s.getUuid().toString());
+                }
+
             }
         }
 
@@ -266,14 +271,27 @@ public class MiGraphActivity extends Activity {
             if ((b.length > 0) && !String.valueOf(b).equals("")) {
                 //Log.i(characteristic.getUuid().toString(), "state: " + state + " value:" + Arrays.toString(b));
                 if (characteristic.getUuid().equals(MiBandConstants.UUID_CHARACTERISTIC_REALTIME_STEPS)) {
+                    int steps = 0xff & b[0] | (0xff & b[1]) << 8;
+                    Log.d("STEPS", steps + "");
                     mMiBand.setSteps(0xff & b[0] | (0xff & b[1]) << 8);
                 } else if (characteristic.getUuid().equals(MiBandConstants.UUID_CHARACTERISTIC_BATTERY)) {
                     Battery battery = Battery.fromByte(b);
+                    Log.d("BATTERY", battery.toString());
                     mMiBand.setBattery(battery);
                 } else if (characteristic.getUuid().equals(MiBandConstants.UUID_CHARACTERISTIC_DEVICE_INFO)) {
                     byte[] version = Arrays.copyOfRange(b, b.length - 4, b.length);
                     mMiBand.setFirmware(version);
+                    if(version!= null) {
+                        Log.d("FIRMWARE", version.toString());
+                    }
+                    else{
+                        Log.d("FIRMWARE", "null");
+                    }
                     sharedPreferences.edit().putString(MiBandConstants.PREFERENCE_FIRMWARE, mMiBand.getFirmware()).commit();
+                }
+                else if(characteristic.getUuid().equals(MiBandConstants.UUID_CHARACTERISTIC_DEVICE_NAME)){
+                    String s = b.toString();
+                    Log.d("SENSOR", s + ": data " + b);
                 }
                 state++;
             }
@@ -289,6 +307,9 @@ public class MiGraphActivity extends Activity {
                     request(MiBandConstants.UUID_CHARACTERISTIC_DEVICE_INFO);
                     break;
                 case 3:
+                    request(MiBandConstants.UUID_CHARACTERISTIC_DEVICE_NAME);
+                    break;
+                case 4:
                     state = 0;
                     break;
             }

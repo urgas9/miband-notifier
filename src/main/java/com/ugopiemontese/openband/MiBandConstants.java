@@ -26,6 +26,8 @@ public class MiBandConstants
 
 	public static final String MAC_ADDRESS_FILTER = "88:0F:10";
 
+	public static final String MAC_ADDRESS_FILTER_1S = "C8:0F:10";
+
 	public static final String BASE_UUID = "0000%s-0000-1000-8000-00805f9b34fb";
 
 	public static final UUID UUID_SERVICE_MILI_SERVICE = UUID.fromString(String.format(BASE_UUID, "FEE0"));
